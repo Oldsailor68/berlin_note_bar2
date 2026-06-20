@@ -1469,7 +1469,7 @@
 
         // Direct Google Gemini Pro Integration (Client-Side proxy simulation for pure static pages)
         async function fetchGeminiResponse(userMessage) {
-    // Вставьте сюда ваш токен из консоли (который вы скопировали)
+    // Вставьте сюда ваш скопированный ключ (начинающийся на AQ.Ab...)
     const API_KEY = "AQ.Ab8RN6LxO109ls9nbopCtN5ipLMF4vgTGxVm29PS39Yz3QemhQ"; 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
@@ -1491,8 +1491,8 @@
 
         const data = await response.json();
         
-        // Проверяем, вернул ли Google успешный ответ
-        if (data.candidates && data.candidates[0].content id && data.candidates[0].content.parts[0].text) {
+        // ИСПРАВЛЕНО: Чистая и корректная проверка структуры Google API
+        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0].text) {
             return data.candidates[0].content.parts[0].text;
         } else if (data.error) {
             console.error("Google API Error:", data.error.message);
@@ -1500,11 +1500,12 @@
         throw new Error("Неверная структура ответа");
     } catch (error) {
         console.error("Gemini Error:", error);
-        // Если ключ заблокирован или структура не подошла, сработает запасной бармен
+        // Если что-то идет не так — включается наш локальный бармен
         return getFallbackResponse(userMessage);
     }
 }
-
+ 
+        
         function getFallbackResponse(text) {
             const cleanText = text.toLowerCase();
             if (cleanText.includes('cocktail') || cleanText.includes('drink') || cleanText.includes('коктейл')) {
