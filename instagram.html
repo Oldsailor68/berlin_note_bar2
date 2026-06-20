@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berlin Note - Instagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0B132B;
+            --bg-card: #1C2541;
+            --accent: #FF9F1C;
+            --text-light: #F4F5F6;
+            --text-muted: #94A3B8;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background-color: var(--bg-main); background-image: linear-gradient(rgba(11, 19, 43, 0.5), rgba(0, 0, 0, 0.7)), url('images/global_bg.png'); background-size: cover; background-attachment: fixed; background-position: center; color: var(--text-light); line-height: 1.6; -webkit-user-select: none; user-select: none; }
+        a { text-decoration: none; color: var(--accent); }
+        header { padding: 1.5rem 5%; background: rgba(11, 19, 43, 0.85); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        .mock-container { max-width: 900px; margin: 4rem auto; padding: 2rem; background-color: var(--bg-card); border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 3rem; }
+        .profile-pic { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; padding: 5px; }
+        .profile-info h1 { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 0.5rem; }
+        .profile-stats { display: flex; gap: 1.5rem; margin-bottom: 1rem; color: var(--text-muted); }
+        .profile-stats span { color: var(--text-light); font-weight: 600; }
+        .btn-follow { background-color: var(--accent); color: var(--bg-main); border: none; padding: 0.5rem 2rem; border-radius: 4px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-follow:hover { box-shadow: 0 0 15px rgba(255, 159, 28, 0.4); transform: translateY(-2px); }
+        
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; transition: transform 0.3s; cursor: pointer; }
+        .grid img:hover { transform: scale(1.02); }
+        
+        .back-link { display: block; text-align: center; margin-top: 2rem; font-size: 1.1rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--text-light); }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="index.html" style="display: flex; align-items: center; gap: 10px; color: var(--text-light);">
+                <img src="images/logo.png" alt="Logo" style="height: 40px; border-radius: 4px;">
+                <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700;">BERLIN <span style="color: var(--accent);">NOTE</span></div>
+            </a>
+        </div>
+    </header>
+
+    <div class="mock-container">
+        <div style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; font-style: italic;">Это стилизованная тестовая заглушка профиля Instagram</div>
+        
+        <div class="profile-header">
+            <img src="images/logo.png" alt="Profile" class="profile-pic" style="background: var(--bg-main);">
+            <div class="profile-info">
+                <h1>berlin.note.jazz</h1>
+                <div class="profile-stats">
+                    <div><span>6</span> Публикаций</div>
+                    <div><span>10.5k</span> Подписчиков</div>
+                    <div><span>12</span> Подписок</div>
+                </div>
+                <p><strong>Berlin Note Jazz Bar</strong><br>🎷 Jazz, Noir & Cocktails<br>📍 Kreuzberg, Berlin<br>✨ Opening: Oct 2026</p>
+                <button class="btn-follow">Подписаться</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <img src="images/event_1_1781691100776.png" alt="Post 1">
+            <img src="images/gallery_1_1781691161123.png" alt="Post 2">
+            <img src="images/about_us_1781691091010.png" alt="Post 3">
+            <img src="images/event_2_1781691114552.png" alt="Post 4">
+            <img src="images/gallery_3_1781691198604.png" alt="Post 5">
+            <img src="images/hero_bg_1781691077183.png" alt="Post 6">
+        </div>
+        
+        <a href="index.html" class="back-link">&larr; Вернуться на главную страницу</a>
+    </div>
+</body>
+</html>

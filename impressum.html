@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum - Berlin Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0B132B;
+            --bg-card: #1C2541;
+            --accent: #FF9F1C;
+            --text-light: #F4F5F6;
+            --text-muted: #94A3B8;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; font-family: var(--font-body); background-color: var(--bg-main); background-image: linear-gradient(rgba(11, 19, 43, 0.5), rgba(0, 0, 0, 0.7)), url('images/global_bg.png'); background-size: cover; background-attachment: fixed; background-position: center; color: var(--text-light); line-height: 1.6; -webkit-user-select: none; user-select: none; }
+        a { text-decoration: none; color: var(--accent); }
+        h1, h2, h3 { font-family: var(--font-heading); margin-bottom: 1rem; }
+        header { padding: 1.5rem 5%; background: rgba(11, 19, 43, 0.85); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .content { padding: 4rem 5%; max-width: 800px; margin: 0 auto; flex-grow: 1; overflow-y: auto; }
+        .content p { color: var(--text-muted); margin-bottom: 1.5rem; }
+        footer { background-color: var(--bg-card); padding: 2rem 5%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="index.html" style="display: flex; align-items: center; gap: 10px; color: var(--text-light);">
+                <img src="images/logo.png" alt="Logo" style="height: 40px; border-radius: 4px;">
+                <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700;">BERLIN <span style="color: var(--accent);">NOTE</span></div>
+            </a>
+        </div>
+    </header>
+    <div class="content">
+        <h1>Impressum</h1>
+        <p>Angaben gemäß § 5 TMG</p>
+        <p>
+            <strong>Berlin Note Jazz Bar GmbH</strong><br>
+            Musterstraße 123<br>
+            10999 Berlin<br>
+            Kreuzberg, Germany
+        </p>
+        <h2>Vertreten durch:</h2>
+        <p>Max Mustermann (Geschäftsführer)</p>
+        <h2>Kontakt:</h2>
+        <p>
+            Telefon: +49 30 1234567<br>
+            E-Mail: info@berlin-note.de
+        </p>
+        <h2>Registereintrag:</h2>
+        <p>
+            Eintragung im Handelsregister.<br>
+            Registergericht: Amtsgericht Charlottenburg (Berlin)<br>
+            Registernummer: HRB 123456 B
+        </p>
+        <h2>Umsatzsteuer-ID:</h2>
+        <p>Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: DE123456789</p>
+    </div>
+    <footer>
+        <p>&copy; 2026 Berlin Note. <a href="index.html">Zurück zur Startseite</a></p>
+    </footer>
+</body>
+</html>
