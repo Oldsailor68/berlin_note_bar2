@@ -1386,203 +1386,57 @@
     </div>
 
     <script>
-        // Bookings auto-fill logic
-        function prefillBooking(datetime) {
-            const dateInput = document.getElementById('booking-date');
-            if (dateInput) {
-                dateInput.value = datetime;
-                if (typeof validateBookingTime === 'function') validateBookingTime(dateInput);
-            }
-            const formSection = document.getElementById('booking');
-            if (formSection) {
-                formSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Time validation logic for booking
-        function validateBookingTime(input) {
-            if (!input.value) {
-                input.setCustomValidity('');
-                return;
-            }
-            const timePart = input.value.split('T')[1];
-            if (timePart) {
-                const [hours, minutes] = timePart.split(':').map(Number);
-                const timeInMinutes = hours * 60 + minutes;
-                if (timeInMinutes < 960 || timeInMinutes > 1320) {
-                    input.setCustomValidity('Заказ столика возможен только с 16:00 до 22:00.');
-                    return;
-                }
-            }
-            input.setCustomValidity('');
-        }
-
-        // File upload UI logic
-        function handleFileUpload(input) {
-            const label = document.getElementById('file-drop-label');
-            const display = document.getElementById('file-name-display');
-            if (input.files && input.files.length > 0) {
-                display.textContent = '✓ ' + input.files[0].name;
-                label.classList.add('file-attached');
-            } else {
-                display.textContent = 'Загрузить резюме (.pdf)';
-                label.classList.remove('file-attached');
-            }
-        }
-
-        // Carousel scroll logic
-        function scrollEvents(direction) {
-            const grid = document.getElementById('events-grid');
-            const scrollAmount = 350 + 32; // card width + gap
-            grid.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
-            setTimeout(updateCarouselArrows, 400);
-        }
-
-        function updateCarouselArrows() {
-            const grid = document.getElementById('events-grid');
-            if (!grid) return;
-            const prevBtn = document.querySelector('.prev-arrow');
-            const nextBtn = document.querySelector('.next-arrow');
-            
-            if (grid.scrollLeft <= 0) {
-                prevBtn.disabled = true;
-            } else {
-                prevBtn.disabled = false;
-            }
-            
-            if (Math.ceil(grid.scrollLeft + grid.clientWidth) >= grid.scrollWidth - 2) {
-                nextBtn.disabled = true;
-            } else {
-                nextBtn.disabled = false;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('events-grid');
-            if (grid) {
-                grid.addEventListener('scroll', updateCarouselArrows);
-                window.addEventListener('resize', updateCarouselArrows);
-                setTimeout(updateCarouselArrows, 100);
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => {
-                window.location.hash = '';
-            }, 50);
-        }
-
-        function toggleChat() {
-            document.getElementById('chatbotWindow').classList.toggle('active');
-        }
-
-        // Direct Google Gemini Pro Integration (Client-Side proxy simulation for pure static pages)
-
-// Импортируем официальный модуль ИИ
-import { GoogleGenAI } from "@google/generative-ai";
-
-async function fetchGeminiResponse(userMessage) {
-    // Вставьте ваш ключ формата AQ... сюда
-    const API_KEY = "AQ.Ab8RN6LQ6722PgKTNFtQVnOTq_v80NMSN48FOjG6dSJXaer6EQ"; 
-
-    try {
-        // Инициализируем систему через официальный метод Google
-        const ai = new GoogleGenAI({ apiKey: API_KEY });
-        
-        const response = await ai.models.generateContent({
-            model: "gemini-1.5-flash",
-            contents: userMessage,
-            config: {
-                systemInstruction: "Ты — ИИ-ассистент по имени Силуэт джаз-бара «Берлинская Нота» в Берлине. Общайся в атмосфере нуара, загадочно, вежливо, люби джаз и виниловый звук. Помогай гостям узнать об открытии 14 октября 2026 года, бронировании столиков, коктейлях и вакансиях. Отвечай строго на том языке, на котором пишет пользователь."
-            }
-        });
-
-        if (response && response.text) {
-            return response.text;
-        }
-        throw new Error("Пустой ответ от модели");
-    } catch (error) {
-        console.error("Gemini SDK Error:", error);
-        // Если сеть или ключ всё равно заблокированы — сработает локальный бармен
-        return getFallbackResponse(userMessage);
+    // 1. Логика открытия чата
+    function toggleChat() {
+        const window = document.getElementById('chatbotWindow');
+        window.classList.toggle('active');
     }
-}
 
-// Делаем функцию доступной для глобального вызова в коде сайта
-const reply = await window.fetchGeminiResponse(userText);
-        
-        
-        function getFallbackResponse(text) {
-            const cleanText = text.toLowerCase();
-            if (cleanText.includes('cocktail') || cleanText.includes('drink') || cleanText.includes('коктейл')) {
-                return 'Загляните в нашу "Коктейльную карту"! Наш абсолютный хит — Midnight Express на бурбоне с густым дымком, а также Noir Negroni, выдержанный в дубовой бочке.';
-            } else if (cleanText.includes('food') || cleanText.includes('kitchen') || cleanText.includes('кухн')) {
-                return 'Конечно. В "Нашем меню" представлены изысканные закуски и блюда: от мраморного стейка Рибай до сырного плато.';
-            } else if (cleanText.includes('booking') || cleanText.includes('reserv') || cleanText.includes('брон')) {
-                return 'Всё просто: перейдите в блок "Афиша" и нажмите "Забронировать" под интересующим концертом. Дата и время подставятся автоматически. Останется лишь указать имя и телефон.';
-            } else if (cleanText.includes('music') || cleanText.includes('jazz') || cleanText.includes('джаз')) {
-                return 'Наш репертуар — это мост между классическим американским нуаром 50-х и современным европейским индастриалом. От свинга до смелых импровизаций. Открываемся 14 октября!';
-            }
-            return 'Приглушенный свет, шорох винила... Отличная тема для разговора за барной стойкой «Берлинской Ноты». Мы открываемся уже 14 октября 2026 года, приходите!';
-        }
+    // 2. Логика отправки сообщения
+    async function sendMessage() {
+        const input = document.getElementById('user-chat-input');
+        const text = input.value.trim();
+        if (!text) return;
 
-        async function handleBotReply(userText) {
-            showTypingIndicator();
-            const reply = await fetchGeminiResponse(userText);
+        appendMessage(text, 'user-msg');
+        input.value = '';
+        showTypingIndicator();
+
+        // Ваш ключ из AI Studio (вставьте его сюда напрямую)
+        const API_KEY = "AQ.Ab8RN6LQ6722PgKTNFtQVnOTq_v80NMSN48FOjG6dSJXaer6EQ";
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: text }] }]
+                })
+            });
+            const data = await response.json();
+            const reply = data.candidates[0].content.parts[0].text;
             removeTypingIndicator();
             appendMessage(reply, 'bot-msg');
+        } catch (e) {
+            removeTypingIndicator();
+            appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
         }
+    }
 
-        function sendOption(btn, type) {
-            const chatBody = document.getElementById('chatBody');
-            const typingIndicator = document.getElementById('typingIndicator');
-            const userText = btn.innerText;
-            
-            btn.style.display = 'none';
+    // Функции вывода
+    function appendMessage(text, type) {
+        const chatBox = document.getElementById('chatBody');
+        const typing = document.getElementById('typingIndicator');
+        const div = document.createElement('div');
+        div.className = 'chat-msg ' + (type === 'user-msg' ? 'msg-user' : 'msg-bot');
+        div.innerText = text;
+        chatBox.insertBefore(div, typing);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-msg msg-user';
-            userMsg.innerText = userText;
-            chatBody.insertBefore(userMsg, typingIndicator);
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            handleBotReply(userText);
-        }
-
-        function appendMessage(text, type) {
-            const chatBox = document.getElementById('chatBody');
-            const typingIndicator = document.getElementById('typingIndicator');
-            const msg = document.createElement('div');
-            msg.className = type === 'user-msg' ? 'chat-msg msg-user' : 'chat-msg msg-bot';
-            msg.innerText = text;
-            chatBox.insertBefore(msg, typingIndicator);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const typingIndicator = document.getElementById('typingIndicator');
-            typingIndicator.classList.add('active');
-            const chatBox = document.getElementById('chatBody');
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typingIndicator');
-            typingIndicator.classList.remove('active');
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('user-chat-input');
-            const text = input.value.trim();
-            
-            if (!text) return;
-            
-            appendMessage(text, 'user-msg');
-            input.value = '';
-            
-            handleBotReply(text);
-        }
-    </script>
+    function showTypingIndicator() { document.getElementById('typingIndicator').classList.add('active'); }
+    function removeTypingIndicator() { document.getElementById('typingIndicator').classList.remove('active'); }
+</script>
 </body>
 </html>
