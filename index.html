@@ -1469,36 +1469,41 @@
 
         // Direct Google Gemini Pro Integration (Client-Side proxy simulation for pure static pages)
         async function fetchGeminiResponse(userMessage) {
-            // Внедряем динамический подхват API ключа из настроек Vercel
-            // При сборке статичного сайта Vercel инжектирует переменные окружения, 
-            // но в браузере мы можем безопасно использовать их через внешние вызовы 
-            // или использовать плейсхолдер. Мы настроили прямой вызов к Gemini API.
-            const API_KEY = "AI_KEY"; // Vercel подставит значение
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-            
-            const systemInstruction = "Ты — ИИ-ассистент по имени Силуэт джаз-бара «Берлинская Нота» в Берлине. Общайся в атмосфере нуара, загадочно, вежливо, люби джаз и виниловый звук. Помогай гостям узнать об открытии 14 октября 2026 года, бронировании столиков, коктейлях и вакансиях. Отвечай на языке, на котором пишет пользователь.";
+    // Вставьте сюда ваш токен из консоли (который вы скопировали)
+    const API_KEY = "AQ.Ab8RN6LxO109ls9nbopCtN5ipLMF4vgTGxVm29PS39Yz3QemhQ"; 
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: userMessage }] }],
-                        systemInstruction: { parts: [{ text: systemInstruction }] }
-                    })
-                });
-
-                const data = await response.json();
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    return data.candidates[0].content.parts[0].text;
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify({
+                contents: [{ 
+                    parts: [{ text: userMessage }] 
+                }],
+                systemInstruction: {
+                    parts: [{ text: "Ты — ИИ-ассистент по имени Силуэт джаз-бара «Берлинская Нота» в Берлине. Общайся в атмосфере нуара, загадочно, вежливо, люби джаз и виниловый звук. Помогай гостям узнать об открытии 14 октября 2026 года, бронировании столиков, коктейлях и вакансиях. Отвечай строго на том языке, на котором пишет пользователь." }]
                 }
-                throw new Error("Invalid response structural format");
-            } catch (error) {
-                console.error("Gemini Error:", error);
-                // Запасной локальный обработчик на случай проблем с сетью/ключами
-                return getFallbackResponse(userMessage);
-            }
+            })
+        });
+
+        const data = await response.json();
+        
+        // Проверяем, вернул ли Google успешный ответ
+        if (data.candidates && data.candidates[0].content id && data.candidates[0].content.parts[0].text) {
+            return data.candidates[0].content.parts[0].text;
+        } else if (data.error) {
+            console.error("Google API Error:", data.error.message);
         }
+        throw new Error("Неверная структура ответа");
+    } catch (error) {
+        console.error("Gemini Error:", error);
+        // Если ключ заблокирован или структура не подошла, сработает запасной бармен
+        return getFallbackResponse(userMessage);
+    }
+}
 
         function getFallbackResponse(text) {
             const cleanText = text.toLowerCase();
