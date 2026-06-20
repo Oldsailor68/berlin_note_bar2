@@ -953,6 +953,16 @@
             }
         }
     </style>
+
+    <script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
+
+    
 </head>
 <body>
 
@@ -1468,44 +1478,40 @@
         }
 
         // Direct Google Gemini Pro Integration (Client-Side proxy simulation for pure static pages)
-        async function fetchGeminiResponse(userMessage) {
-    // Вставьте сюда ваш токен целиком (начинающийся на AQ.Ab...)
+
+// Импортируем официальный модуль ИИ
+import { GoogleGenAI } from "@google/generative-ai";
+
+async function fetchGeminiResponse(userMessage) {
+    // Вставьте ваш ключ формата AQ... сюда
     const API_KEY = "AQ.Ab8RN6LQ6722PgKTNFtQVnOTq_v80NMSN48FOjG6dSJXaer6EQ"; 
-    
-    // Возвращаем передачу ключа через параметр URL (?key=), но используем стабильный v1beta
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
     try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                contents: [{ 
-                    parts: [{ text: userMessage }] 
-                }],
-                systemInstruction: {
-                    parts: [{ text: "Ты — ИИ-ассистент по имени Силуэт джаз-бара «Берлинская Нота» в Берлине. Общайся в атмосфере нуара, загадочно, вежливо, люби джаз и виниловый звук. Помогай гостям узнать об открытии 14 октября 2026 года, бронировании столиков, коктейлях и вакансиях. Отвечай строго на том языке, на котором пишет пользователь." }]
-                }
-            })
+        // Инициализируем систему через официальный метод Google
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
+        
+        const response = await ai.models.generateContent({
+            model: "gemini-1.5-flash",
+            contents: userMessage,
+            config: {
+                systemInstruction: "Ты — ИИ-ассистент по имени Силуэт джаз-бара «Берлинская Нота» в Берлине. Общайся в атмосфере нуара, загадочно, вежливо, люби джаз и виниловый звук. Помогай гостям узнать об открытии 14 октября 2026 года, бронировании столиков, коктейлях и вакансиях. Отвечай строго на том языке, на котором пишет пользователь."
+            }
         });
 
-        const data = await response.json();
-        
-        // Четкая проверка структуры ответа Google AI Studio
-        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0].text) {
-            return data.candidates[0].content.parts[0].text;
-        } else if (data.error) {
-            console.error("Google AI Studio Error:", data.error.message);
+        if (response && response.text) {
+            return response.text;
         }
-        throw new Error("Неверная структура JSON");
+        throw new Error("Пустой ответ от модели");
     } catch (error) {
-        console.error("Gemini Fetch Error:", error);
-        // Если запрос заблокирован CORS или сервером — включается локальный бармен
+        console.error("Gemini SDK Error:", error);
+        // Если сеть или ключ всё равно заблокированы — сработает локальный бармен
         return getFallbackResponse(userMessage);
     }
 }
+
+// Делаем функцию доступной для глобального вызова в коде сайта
+const reply = await window.fetchGeminiResponse(userText);
+        
         
         function getFallbackResponse(text) {
             const cleanText = text.toLowerCase();
