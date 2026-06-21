@@ -789,60 +789,51 @@
     position: fixed;
     bottom: 90px;
     right: 30px;
-    width: 650px; /* Сохраняем комфортную горизонтальную ширину */
-    height: 600px; /* Увеличили высоту для удобного чтения */
-    background-color: #1a1a1a;
-    border: 1px solid #333;
+    width: 650px; 
+    height: 600px; /* Окно стало заметно выше */
+    background: rgba(28, 37, 65, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 159, 28, 0.3);
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    z-index: 1000;
     display: none;
     flex-direction: column;
-    z-index: 1000;
+    overflow: hidden;
     transition: all 0.3s ease;
 }
 
-/* Переключатель видимости (если используете класс .active) */
 .chatbot-window.active {
     display: flex;
 }
 
-/* Делаем область с сообщениями более просторной */
 .chat-body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
-/* Сетка для кнопок быстрых ответов, чтобы они красиво ложились в широком окне */
 .chat-options {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Кнопки встанут в два аккуратных ряда по две штуки */
+    grid-template-columns: 1fr 1fr; /* Кнопки ложатся в 2 колонки */
     gap: 8px;
-    padding: 10px 20px;
-    background: #111;
-    border-top: 1px solid #222;
+    padding: 15px;
+    background: rgba(11, 19, 43, 0.5);
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.chat-option-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-    text-align: left;
-    /* Ваши текущие стили для кнопок (цвет, бордер) сохраняются */
-}
-
-/* Адаптивность: на мобильных экранах возвращаем вертикальный формат, чтобы окно не вылезало за края */
 @media (max-width: 700px) {
     .chatbot-window {
         width: calc(100% - 40px);
         right: 20px;
         left: 20px;
-        height: 80vh;
+        height: 75vh;
     }
     .chat-options {
-        grid-template-columns: 1fr; /* На смартфонах кнопки снова в один ряд */
+        grid-template-columns: 1fr;
     }
 }
         .chat-header {
@@ -1437,28 +1428,19 @@ function toggleChat() {
     }
 }
 
-// Универсальная функция для клика по кнопкам быстрых ответов
 function sendQuickMessage(buttonElement) {
     const messageText = buttonElement.innerText;
-    
-    // Ищем поле ввода по всем возможным ID и классам из вашей верстки
     const chatInput = document.getElementById('chatInput') || 
                       document.getElementById('message-input') || 
                       document.getElementById('userInput') ||
                       document.querySelector('.chatbot-window input');
     
     if (chatInput) {
-        // Записываем текст кнопки в поле ввода
         chatInput.value = messageText;
-        
-        // Магия: принудительно вызываем функцию отправки сообщения
-        if (typeof sendMessage === 'function') {
-            sendMessage();
-        }
+        sendMessage();
     }
 }
 
-// Основная функция отправки сообщения на сервер Vercel
 async function sendMessage() {
     const chatInput = document.getElementById('chatInput') || 
                       document.getElementById('message-input') || 
@@ -1469,17 +1451,11 @@ async function sendMessage() {
     
     const text = chatInput.value.trim();
     
-    // Отображаем сообщение пользователя на экране
-    if (typeof appendMessage === 'function') {
-        appendMessage(text, 'user-msg');
-    }
-    
-    // Очищаем поле ввода и показываем, что Силуэт печатавем ответ
+    appendMessage(text, 'user-msg');
     chatInput.value = '';
-    if (typeof showTypingIndicator === 'function') showTypingIndicator();
+    showTypingIndicator();
     
     try {
-        // Отправляем запрос на вашу серверную функцию Vercel
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1487,28 +1463,20 @@ async function sendMessage() {
         });
         
         const data = await response.json();
-        if (typeof removeTypingIndicator === 'function') removeTypingIndicator();
+        removeTypingIndicator();
         
-        // Если бэкенд вернул ошибку, обрабатываем её красиво
-        if (data.error) {
-            if (typeof appendMessage === 'function') {
-                appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
-            }
+        if (data.error || !data.candidates || !data.candidates[0]) {
+            appendMessage("Силуэт протирает бокалы и немного отвлекся... Пожалуйста, повторите вопрос.", 'bot-msg');
             return;
         }
         
-        // Достаем текст ответа из структуры данных Gemini
         const reply = data.candidates[0].content.parts[0].text;
-        if (typeof appendMessage === 'function') {
-            appendMessage(reply, 'bot-msg');
-        }
+        appendMessage(reply, 'bot-msg');
         
     } catch (e) {
         console.error("Ошибка чата:", e);
-        if (typeof removeTypingIndicator === 'function') removeTypingIndicator();
-        if (typeof appendMessage === 'function') {
-            appendMessage("Простите, связь с баром прервалась. Налейте пока бокал виски и повторите попытку.", 'bot-msg');
-        }
+        removeTypingIndicator();
+        appendMessage("Простите, связь с баром прервалась. Попробуйте еще раз чуть позже.", 'bot-msg');
     }
 }
 
