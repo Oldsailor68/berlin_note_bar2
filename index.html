@@ -1393,35 +1393,36 @@
     }
 
     // 2. Логика отправки сообщения
-    async function sendMessage() {
-    const input = document.getElementById('user-chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-
-        function sendQuickMessage(buttonElement) {
-    // Получаем текст, написанный на кнопке
+    function sendQuickMessage(buttonElement) {
+    // Получаем чистый текст с нажатой кнопки
     const messageText = buttonElement.innerText;
     
-    // Находим поле ввода сообщения на вашем сайте (проверьте его id, обычно это chatInput)
-    const chatInput = document.getElementById('chatInput'); 
+    // Пытаемся найти поле ввода (проверяем самые частые id в коде)
+    const chatInput = document.getElementById('chatInput') || 
+                      document.getElementById('message-input') || 
+                      document.getElementById('userInput');
     
     if (chatInput) {
-        // Вставляем текст кнопки в поле ввода
+        // Подставляем текст кнопки в инпут
         chatInput.value = messageText;
-        // Автоматически вызываем вашу главную функцию отправки
-        sendMessage(); 
-    } else {
-        // Если поле ввода имеет другой id или текст отправляется напрямую:
-        // Подставляем текст напрямую в вашу функцию отправки (если она это поддерживает)
+        
+        // Автоматически запускаем отправку сообщения
         if (typeof sendMessage === 'function') {
-            // В зависимости от того, как написана ваша sendMessage, 
-            // этот костыль имитирует отправку, если input не найден:
-            const chatBox = document.getElementById('chatBody');
-            if (chatBox) {
-                appendMessage(messageText, 'user-msg');
-                // Здесь вызывается бэкенд-запрос с текстом messageText
-                // (Если sendMessage завязана строго на input, убедитесь, что id совпадает!)
-            }
+            sendMessage();
+        }
+    } else {
+        // Если поле ввода не найдено по id, отправляем запрос в бэкенд напрямую через вашу логику
+        // (Отображаем сообщение пользователя в чате)
+        if (typeof appendMessage === 'function') {
+            appendMessage(messageText, 'user-msg');
+        }
+        
+        // Вызываем функцию sendMessage, если она умеет принимать текст напрямую, 
+        // либо ищем ваш тег input в коде формы чата
+        const fallbackInput = document.querySelector('.chatbot-window input');
+        if (fallbackInput) {
+            fallbackInput.value = messageText;
+            if (typeof sendMessage === 'function') sendMessage();
         }
     }
 }
