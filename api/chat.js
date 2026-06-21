@@ -24,6 +24,8 @@ export default async function handler(req, res) {
         });
 
         const data = await googleRes.json();
+
+        console.log("Ответ от Google:", JSON.stringify(data, null, 2));
         
         // Возвращаем ответ ИИ обратно на наш сайт
         res.status(200).json(data);
