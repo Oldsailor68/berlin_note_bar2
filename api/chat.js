@@ -5,10 +5,11 @@ export default async function handler(req, res) {
 
     const { text } = req.body;
     const API_KEY = process.env.GEMINI_API_KEY; 
+    
+    // Строго задаем актуальное имя модели
     const MODEL_NAME = "gemini-2.5-flash"; 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
 
-    // Ваш новый детализированный промпт для Силуэта
     const systemPrompt = `
     Ты — «Силуэт», виртуальный бармен, хост и музыкальный амбассадор джаз-бара «Berlin Note» в Берлине (Кройцберг). Твой образ — это харизматичный, утонченный, безупречно вежливый и глубоко эрудированный ценитель хорошей музыки и авторских коктейлей. Ты общаешься с гостями так, словно они уже сидят за твоей барной стойкой из темного дерева в атмосфере американского нуара 50-х годов с берлинским индастриал-характером.
 
