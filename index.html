@@ -1402,8 +1402,7 @@
     input.value = '';
     showTypingIndicator();
 
-    try {
-        // Теперь мы обращаемся к НАШЕЙ серверной функции на Vercel
+try {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1412,15 +1411,25 @@
 
         const data = await response.json();
         
-        // Парсим ответ так же, как делали это раньше
-        const reply = data.candidates[0].content.parts[0].text;
-        
-        removeTypingIndicator();
-        appendMessage(reply, 'bot-msg');
+        // Сначала проверяем, не вернул ли наш сервер ошибку
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        // Проверяем, пришел ли правильный ответ от Gemini
+        if (data.candidates && data.candidates.length > 0) {
+            const reply = data.candidates[0].content.parts[0].text;
+            removeTypingIndicator();
+            appendMessage(reply, 'bot-msg');
+        } else {
+            throw new Error("Сервер вернул пустой или неверный ответ.");
+        }
+
     } catch (e) {
         removeTypingIndicator();
-        appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
-        console.error(e);
+        // Теперь бот вежливо скажет об ошибке прямо в чат
+        appendMessage("Простите, связь с баром прервалась. Техническая ошибка: " + e.message, 'bot-msg');
+        console.error("Детали ошибки сервера:", e);
     }
 }
 
