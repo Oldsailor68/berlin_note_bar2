@@ -11,8 +11,8 @@ export default async function handler(req, res) {
 
     // Достаем спрятанный ключ из настроек Vercel
     const API_KEY = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+    
     try {
         // Делаем защищенный запрос к Google
         const googleRes = await fetch(url, {
