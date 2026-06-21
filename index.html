@@ -1371,12 +1371,12 @@
                 <div class="typing-dot"></div>
             </div>
         </div>
-        <div class="chat-options" id="chatOptions">
-            <button class="chat-option-btn" onclick="sendOption(this, 'cocktail')">What do you recommend to drink? 🍸</button>
-            <button class="chat-option-btn" onclick="sendOption(this, 'food')">Do you have a kitchen? 🍽️</button>
-            <button class="chat-option-btn" onclick="sendOption(this, 'booking')">Help with reservation 📅</button>
-            <button class="chat-option-btn" onclick="sendOption(this, 'music')">What kind of music plays? 🎷</button>
-        </div>
+<div class="chat-options">
+    <button class="chat-option-btn" onclick="sendQuickMessage(this)">🎷 Что в афише на октябрь?</button>
+    <button class="chat-option-btn" onclick="sendQuickMessage(this)">🍸 Посоветуй нуарный коктейль</button>
+    <button class="chat-option-btn" onclick="sendQuickMessage(this)">✨ Как забронировать столик?</button>
+    <button class="chat-option-btn" onclick="sendQuickMessage(this)">💼 Ищу работу, есть вакансии?</button>
+</div>
         <div class="chat-input-area" style="display: flex; gap: 10px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(11, 19, 43, 0.5);">
             <input type="text" id="user-chat-input" placeholder="Write a message..." style="flex-grow: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid rgba(255, 159, 28, 0.3); background: rgba(255, 255, 255, 0.05); color: var(--text-light); font-family: var(--font-body); font-size: 0.9rem; outline: none;" onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()" style="background: var(--accent); color: var(--bg-main); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;">
@@ -1397,6 +1397,34 @@
     const input = document.getElementById('user-chat-input');
     const text = input.value.trim();
     if (!text) return;
+
+        function sendQuickMessage(buttonElement) {
+    // Получаем текст, написанный на кнопке
+    const messageText = buttonElement.innerText;
+    
+    // Находим поле ввода сообщения на вашем сайте (проверьте его id, обычно это chatInput)
+    const chatInput = document.getElementById('chatInput'); 
+    
+    if (chatInput) {
+        // Вставляем текст кнопки в поле ввода
+        chatInput.value = messageText;
+        // Автоматически вызываем вашу главную функцию отправки
+        sendMessage(); 
+    } else {
+        // Если поле ввода имеет другой id или текст отправляется напрямую:
+        // Подставляем текст напрямую в вашу функцию отправки (если она это поддерживает)
+        if (typeof sendMessage === 'function') {
+            // В зависимости от того, как написана ваша sendMessage, 
+            // этот костыль имитирует отправку, если input не найден:
+            const chatBox = document.getElementById('chatBody');
+            if (chatBox) {
+                appendMessage(messageText, 'user-msg');
+                // Здесь вызывается бэкенд-запрос с текстом messageText
+                // (Если sendMessage завязана строго на input, убедитесь, что id совпадает!)
+            }
+        }
+    }
+}
 
     appendMessage(text, 'user-msg');
     input.value = '';
