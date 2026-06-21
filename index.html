@@ -1421,6 +1421,7 @@
 
     // 2. Логика отправки сообщения
     // Главная функция открытия/закрытия окна чата
+// Функция открытия и закрытия окна по нажатию на кнопку
 function toggleChat() {
     const chatWindow = document.querySelector('.chatbot-window');
     if (chatWindow) {
@@ -1428,6 +1429,7 @@ function toggleChat() {
     }
 }
 
+// Обработчик клика по русским кнопкам быстрых ответов
 function sendQuickMessage(buttonElement) {
     const messageText = buttonElement.innerText;
     const chatInput = document.getElementById('chatInput') || 
@@ -1437,10 +1439,11 @@ function sendQuickMessage(buttonElement) {
     
     if (chatInput) {
         chatInput.value = messageText;
-        sendMessage();
+        sendMessage(); // Автоматический улет сообщения
     }
 }
 
+// Главная функция отправки
 async function sendMessage() {
     const chatInput = document.getElementById('chatInput') || 
                       document.getElementById('message-input') || 
@@ -1451,37 +1454,45 @@ async function sendMessage() {
     
     const text = chatInput.value.trim();
     
+    // Показываем сообщение пользователя (подставляем ваш класс msg-user)
     appendMessage(text, 'user-msg');
     chatInput.value = '';
     showTypingIndicator();
     
     try {
-        // Найдите этот блок внутри async function sendMessage() и замените его:
-const data = await response.json();
-removeTypingIndicator();
-
-if (data.error) {
-    // Проверяем, если Google ругается на квоту (лимит запросов)
-    if (data.error.includes && data.error.includes("quota")) {
-        appendMessage("Знаете, у моей барной стойки сегодня непривычно людно. Дайте мне буквально полминуты, я разведу заказы и вернусь к нашей беседе.", 'bot-msg');
-    } else {
-        appendMessage("Силуэт протирает бокалы и немного отвлекся... Пожалуйста, повторите вопрос.", 'bot-msg');
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
+        
+        const data = await response.json();
+        removeTypingIndicator();
+        
+        // Умная проверка на лимиты квоты или ошибки бэкенда
+        if (data.error) {
+            if (data.error.includes && data.error.includes("quota")) {
+                appendMessage("Знаете, у моей барной стойки сейчас слишком людно. Дайте мне полминуты, я разведу заказы и вернусь к нашей беседе.", 'bot-msg');
+            } else {
+                appendMessage("Силуэт протирает бокалы и немного отвлекся... Пожалуйста, повторите вопрос.", 'bot-msg');
+            }
+            return;
+        }
+        
+        // Извлекаем ответ из структуры данных Gemini
+        if (data.candidates && data.candidates[0]) {
+            const reply = data.candidates[0].content.parts[0].text;
+            appendMessage(reply, 'bot-msg');
+        } else {
+            appendMessage("Силуэт на секунду задумался под звуки саксофона. Повторите, пожалуйста.", 'bot-msg');
+        }
+        
+    } catch (e) {
+        console.error("Ошибка чата:", e);
+        removeTypingIndicator();
+        appendMessage("Простите, связь с баром прервалась. Налейте пока бокал виски и повторите попытку.", 'bot-msg');
     }
-    return;
 }
-    }
-}
-
-    // Функции вывода
-    function appendMessage(text, type) {
-        const chatBox = document.getElementById('chatBody');
-        const typing = document.getElementById('typingIndicator');
-        const div = document.createElement('div');
-        div.className = 'chat-msg ' + (type === 'user-msg' ? 'msg-user' : 'msg-bot');
-        div.innerText = text;
-        chatBox.insertBefore(div, typing);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
 
     function showTypingIndicator() { document.getElementById('typingIndicator').classList.add('active'); }
     function removeTypingIndicator() { document.getElementById('typingIndicator').classList.remove('active'); }
