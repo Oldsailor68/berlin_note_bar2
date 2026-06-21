@@ -1393,72 +1393,86 @@
     }
 
     // 2. Логика отправки сообщения
-    function sendQuickMessage(buttonElement) {
-    // Получаем чистый текст с нажатой кнопки
+    // Главная функция открытия/закрытия окна чата
+function toggleChat() {
+    const chatWindow = document.querySelector('.chatbot-window');
+    if (chatWindow) {
+        chatWindow.classList.toggle('active');
+    }
+}
+
+// Универсальная функция для клика по кнопкам быстрых ответов
+function sendQuickMessage(buttonElement) {
     const messageText = buttonElement.innerText;
     
-    // Пытаемся найти поле ввода (проверяем самые частые id в коде)
+    // Ищем поле ввода по всем возможным ID и классам из вашей верстки
     const chatInput = document.getElementById('chatInput') || 
                       document.getElementById('message-input') || 
-                      document.getElementById('userInput');
+                      document.getElementById('userInput') ||
+                      document.querySelector('.chatbot-window input');
     
     if (chatInput) {
-        // Подставляем текст кнопки в инпут
+        // Записываем текст кнопки в поле ввода
         chatInput.value = messageText;
         
-        // Автоматически запускаем отправку сообщения
+        // Магия: принудительно вызываем функцию отправки сообщения
         if (typeof sendMessage === 'function') {
             sendMessage();
-        }
-    } else {
-        // Если поле ввода не найдено по id, отправляем запрос в бэкенд напрямую через вашу логику
-        // (Отображаем сообщение пользователя в чате)
-        if (typeof appendMessage === 'function') {
-            appendMessage(messageText, 'user-msg');
-        }
-        
-        // Вызываем функцию sendMessage, если она умеет принимать текст напрямую, 
-        // либо ищем ваш тег input в коде формы чата
-        const fallbackInput = document.querySelector('.chatbot-window input');
-        if (fallbackInput) {
-            fallbackInput.value = messageText;
-            if (typeof sendMessage === 'function') sendMessage();
         }
     }
 }
 
-    appendMessage(text, 'user-msg');
-    input.value = '';
-    showTypingIndicator();
-
-try {
+// Основная функция отправки сообщения на сервер Vercel
+async function sendMessage() {
+    const chatInput = document.getElementById('chatInput') || 
+                      document.getElementById('message-input') || 
+                      document.getElementById('userInput') ||
+                      document.querySelector('.chatbot-window input');
+                      
+    if (!chatInput || !chatInput.value.trim()) return;
+    
+    const text = chatInput.value.trim();
+    
+    // Отображаем сообщение пользователя на экране
+    if (typeof appendMessage === 'function') {
+        appendMessage(text, 'user-msg');
+    }
+    
+    // Очищаем поле ввода и показываем, что Силуэт печатавем ответ
+    chatInput.value = '';
+    if (typeof showTypingIndicator === 'function') showTypingIndicator();
+    
+    try {
+        // Отправляем запрос на вашу серверную функцию Vercel
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: text })
         });
-
-        const data = await response.json();
         
-        // Сначала проверяем, не вернул ли наш сервер ошибку
+        const data = await response.json();
+        if (typeof removeTypingIndicator === 'function') removeTypingIndicator();
+        
+        // Если бэкенд вернул ошибку, обрабатываем её красиво
         if (data.error) {
-            throw new Error(data.error);
+            if (typeof appendMessage === 'function') {
+                appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
+            }
+            return;
         }
-
-        // Проверяем, пришел ли правильный ответ от Gemini
-        if (data.candidates && data.candidates.length > 0) {
-            const reply = data.candidates[0].content.parts[0].text;
-            removeTypingIndicator();
+        
+        // Достаем текст ответа из структуры данных Gemini
+        const reply = data.candidates[0].content.parts[0].text;
+        if (typeof appendMessage === 'function') {
             appendMessage(reply, 'bot-msg');
-        } else {
-            throw new Error("Сервер вернул пустой или неверный ответ.");
         }
-
+        
     } catch (e) {
-        removeTypingIndicator();
-        // Теперь бот вежливо скажет об ошибке прямо в чат
-        appendMessage("Простите, связь с баром прервалась. Техническая ошибка: " + e.message, 'bot-msg');
-        console.error("Детали ошибки сервера:", e);
+        console.error("Ошибка чата:", e);
+        if (typeof removeTypingIndicator === 'function') removeTypingIndicator();
+        if (typeof appendMessage === 'function') {
+            appendMessage("Простите, связь с баром прервалась. Налейте пока бокал виски и повторите попытку.", 'bot-msg');
+        }
     }
 }
 
