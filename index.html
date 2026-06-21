@@ -7,8 +7,8 @@
     <meta name="description" content="Ищете идеальный джаз-бар в Берлине? Berlin Note в Кройцберге — это живая музыка, атмосфера американского нуара 50-х и авторские коктейли. Открытие осенью 2026.">
     <meta name="keywords" content="джаз бар берлин, бар с живой музыкой, коктейльный бар берлин, кройцберг бары, джаз клуб берлин, Berlin Note">
     
-    <meta property="og:title" content="Berlin Note - Jazz Bar Kreuzberg">
-    <meta property="og:description" content="Erleben Sie den besten Modern Jazz, Swing und Noir-Atmosphäre in Berlin. Eröffnung im Herbst 2026.">
+    <meta property="og:title" content="Berlin Note | Джаз-бар и живая музыка в Берлине">
+    <meta property="og:description" content="Berlin Note в Кройцберге — это живая музыка, атмосфера американского нуара 50-х и авторские коктейли. Открытие осенью 2026.">
     <meta property="og:image" content="images/hero_bg_1781691077183.png">
     <meta property="og:type" content="website">
 
@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    
     <style>
         :root {
             --bg-main: #0B132B;
@@ -29,108 +28,46 @@
             --font-body: 'Inter', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 120px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: 120px; }
 
         body {
             font-family: var(--font-body);
             background-color: var(--bg-main);
             background-image: linear-gradient(rgba(11, 19, 43, 0.5), rgba(0, 0, 0, 0.7)), url('images/global_bg.png');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background-size: cover; background-attachment: fixed; background-position: center;
+            color: var(--text-light); line-height: 1.6; overflow-x: hidden;
         }
 
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-
-        h1, h2, h3, h4 {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; line-height: 1.2; }
         h2 { font-size: 3rem; margin-bottom: 2rem; text-align: center; }
         p { color: var(--text-muted); margin-bottom: 1.5rem; }
 
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background: rgba(11, 19, 43, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 50;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 5%; background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(12px); z-index: 50; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .logo {
-            display: flex; 
-            align-items: center; 
-            gap: 15px;
-        }
-        
+        .logo { display: flex; align-items: center; gap: 15px; }
         .logo img { height: 70px; border-radius: 50%; }
-
-        .logo-text {
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center;
-        }
-
-        .logo-title {
-            font-family: var(--font-heading); 
-            font-size: 1.8rem; 
-            font-weight: 700; 
-            color: var(--accent); 
-            letter-spacing: 2px; 
-            line-height: 1; 
-            text-transform: uppercase; 
-            text-shadow: 0 0 10px rgba(255, 159, 28, 0.5);
-        }
-
-        .logo-subtitle {
-            font-family: var(--font-body); 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            letter-spacing: 4px; 
-            text-transform: uppercase; 
-            margin-top: 4px;
-        }
+        .logo-text { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .logo-title { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; color: var(--accent); letter-spacing: 2px; line-height: 1; text-transform: uppercase; text-shadow: 0 0 10px rgba(255, 159, 28, 0.5); }
+        .logo-subtitle { font-family: var(--font-body); font-size: 0.85rem; color: var(--text-muted); letter-spacing: 4px; text-transform: uppercase; margin-top: 4px; }
 
         nav ul { display: flex; gap: 2rem; }
         nav a { font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; }
         nav a:hover { color: var(--accent); }
 
         .hero {
-            height: 100vh;
-            background: linear-gradient(to bottom, rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.95)), url('images/hero_bg_1781691077183.png') center/cover no-repeat;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 80px 5% 0;
+            height: 100vh; background: linear-gradient(to bottom, rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.95)), url('images/hero_bg_1781691077183.png') center/cover no-repeat;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px 5% 0;
         }
         .hero h1 { font-size: 4.5rem; max-width: 900px; margin-bottom: 2rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
         .hero-buttons { display: flex; gap: 1.5rem; }
 
-        .btn {
-            display: inline-block; padding: 1rem 2.5rem; font-family: var(--font-body); font-size: 1rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; text-align: center;
-        }
+        .btn { display: inline-block; padding: 1rem 2.5rem; font-family: var(--font-body); font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; text-align: center; }
         .btn-primary { background-color: var(--accent); color: var(--bg-main); border: none; box-shadow: 0 0 15px rgba(255, 159, 28, 0.4); }
         .btn-primary:hover { box-shadow: 0 0 25px rgba(255, 159, 28, 0.7); transform: translateY(-2px); }
         .btn-secondary { background-color: transparent; color: var(--text-light); border: 1px solid var(--text-light); }
@@ -141,33 +78,21 @@
         .about { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; }
         .about-text p { font-size: 1.1rem; }
         
-        .img-card {
-            aspect-ratio: 1; overflow: hidden; border-radius: 12px; position: relative; background-color: var(--bg-card);
-            padding: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .img-card { aspect-ratio: 1; overflow: hidden; border-radius: 12px; position: relative; background-color: var(--bg-card); padding: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.05); }
         .img-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; transition: transform 0.7s ease; display: block; }
         .img-card:hover img { transform: scale(1.05); }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
 
         .events-carousel-wrapper { position: relative; max-width: 1200px; margin: 0 auto; }
-        .events-grid {
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 2rem; padding-bottom: 1rem; scrollbar-width: none;
-        }
+        .events-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 2rem; padding-bottom: 1rem; scrollbar-width: none; }
         .events-grid::-webkit-scrollbar { display: none; }
 
-        .carousel-arrow {
-            position: absolute; top: 50%; transform: translateY(-50%); background-color: var(--accent); color: var(--bg-main);
-            border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 10;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 159, 28, 0.4); transition: all 0.3s ease;
-        }
+        .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background-color: var(--accent); color: var(--bg-main); border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(255, 159, 28, 0.4); transition: all 0.3s ease; }
         .carousel-arrow:hover { transform: translateY(-50%) scale(1.1); box-shadow: 0 6px 20px rgba(255, 159, 28, 0.6); }
         .prev-arrow { left: -25px; } .next-arrow { right: -25px; }
 
-        .event-card {
-            background-color: var(--bg-card); border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;
-            display: flex; flex-direction: column; flex: 0 0 350px; scroll-snap-align: start; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .event-card { background-color: var(--bg-card); border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; flex: 0 0 350px; scroll-snap-align: start; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.05); }
         .event-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
         .event-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 6px; transition: transform 0.7s ease; display: block; }
         .event-card:hover img { transform: scale(1.05); }
@@ -176,12 +101,10 @@
         .event-date { color: var(--accent); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; letter-spacing: 1px; }
         .event-title { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-light); }
         .event-genre { color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; }
+        .event-card .btn { width: 100%; padding: 0.8rem; }
 
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .menu-item {
-            background: rgba(28, 37, 65, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s;
-            backdrop-filter: blur(5px); display: flex; flex-direction: column; overflow: hidden;
-        }
+        .menu-item { background: rgba(28, 37, 65, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s; backdrop-filter: blur(5px); display: flex; flex-direction: column; overflow: hidden; }
         .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); border-color: rgba(255, 159, 28, 0.3); }
         .menu-item-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .menu-item-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
@@ -190,75 +113,53 @@
         .menu-item-price { font-family: var(--font-body); font-size: 1.1rem; color: var(--accent); font-weight: 700; }
         .menu-item-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; text-align: center; }
 
-        .booking-container {
-            max-width: 600px; margin: 0 auto; background: rgba(28, 37, 65, 0.85); backdrop-filter: blur(8px); padding: 3rem;
-            border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .booking-container { max-width: 600px; margin: 0 auto; background: rgba(28, 37, 65, 0.85); backdrop-filter: blur(8px); padding: 3rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-light); font-weight: 500; }
-        .form-control {
-            width: 100%; padding: 1rem; background-color: var(--bg-main); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-light);
-            border-radius: 4px; font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s; outline: none;
-        }
+        .form-control { width: 100%; padding: 1rem; background-color: var(--bg-main); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-light); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; transition: border-color 0.3s; outline: none; }
         .form-control:focus { border-color: var(--accent); }
         .form-control::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
         form:invalid button[type="submit"] { pointer-events: none; opacity: 0.3; }
 
-        .jobs-banner {
-            padding: 8rem 5%; text-align: center; background: linear-gradient(to right, rgba(11, 19, 43, 0.9), rgba(11, 19, 43, 0.7)), url('images/jobs_bg_1781691136116.png') center/cover fixed;
-        }
-        
+        .jobs-banner { padding: 8rem 5%; text-align: center; background: linear-gradient(to right, rgba(11, 19, 43, 0.9), rgba(11, 19, 43, 0.7)), url('images/jobs_bg_1781691136116.png') center/cover fixed; }
+        .jobs-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+        .jobs-content h2 { margin-bottom: 1.5rem; }
+        .jobs-content p { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; }
+
         footer { background-color: var(--bg-card); padding: 4rem 5% 2rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
         .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto 3rem; }
         .footer-info h3 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent); }
         .social-icons { display: flex; gap: 1rem; margin-top: 1.5rem; }
-        .social-icons a {
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center;
-            justify-content: center; transition: all 0.3s;
-        }
+        .social-icons a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .social-icons a:hover { background: var(--accent); color: var(--bg-main); transform: translateY(-3px); }
         
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(8px);
-            z-index: 1000; align-items: center; justify-content: center; padding: 1rem;
-        }
+        .map-placeholder { width: 100%; height: 100%; min-height: 200px; background-color: var(--bg-main); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border: 1px dashed rgba(255, 255, 255, 0.1); }
+        .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem; color: var(--text-muted); }
+        .footer-links a { margin-left: 1.5rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        .modal { display: none; position: fixed; inset: 0; background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto; }
         .modal:target { display: flex; animation: modalFadeIn 0.3s ease forwards; }
-        .modal-content {
-            background-color: var(--bg-card); padding: 3rem; border-radius: 8px; max-width: 500px; width: 100%;
-            position: relative; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-        }
+        .modal-content { background-color: var(--bg-card); padding: 3rem; border-radius: 8px; max-width: 500px; width: 100%; position: relative; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5); margin: auto; }
         .modal-close { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.5rem; color: var(--text-muted); transition: color 0.3s; }
         .modal-close:hover { color: var(--text-light); }
         .modal-icon { font-size: 4rem; color: var(--accent); margin-bottom: 1rem; }
 
-        .file-drop-zone {
-            display: block; padding: 2rem; border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 4px; text-align: center;
-            cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; color: var(--text-muted);
-        }
+        .file-drop-zone { display: block; padding: 2rem; border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; color: var(--text-muted); }
         .file-drop-zone:hover { border-color: rgba(255, 255, 255, 0.5); color: var(--text-light); }
+        .file-drop-zone.file-attached { border-color: var(--accent); background: rgba(255, 159, 28, 0.05); color: var(--accent); }
         .file-drop-zone input[type="file"] { display: none; }
         .checkbox-group { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1.5rem; text-align: left; font-size: 0.9rem; color: var(--text-muted); }
 
         /* ==================== ЧАТБОТ СИЛУЭТ ==================== */
-        .chatbot-btn {
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: var(--accent); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(255, 159, 28, 0.4);
-            z-index: 1000; transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .chatbot-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(255, 159, 28, 0.4); z-index: 1000; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .chatbot-btn:hover { transform: scale(1.1); box-shadow: 0 6px 25px rgba(255, 159, 28, 0.6); }
         .chatbot-btn svg { width: 30px; height: 30px; fill: var(--bg-main); }
 
-        .chatbot-window {
-            position: fixed; bottom: 100px; right: 30px; width: 650px; height: 600px;
-            background: rgba(28, 37, 65, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 159, 28, 0.3); border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); z-index: 1000; display: none; flex-direction: column; overflow: hidden;
-        }
+        .chatbot-window { position: fixed; bottom: 100px; right: 30px; width: 650px; height: 600px; background: rgba(28, 37, 65, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 159, 28, 0.3); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); z-index: 1000; display: none; flex-direction: column; overflow: hidden; }
         .chatbot-window.active { display: flex; animation: chatFadeIn 0.3s ease forwards; }
 
-        .chat-header {
-            background: rgba(11, 19, 43, 0.9); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+        .chat-header { background: rgba(11, 19, 43, 0.9); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 600; }
         .chat-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
         .chat-close:hover { color: var(--accent); }
@@ -272,34 +173,18 @@
         .msg-bot { align-self: flex-start; background: rgba(255, 159, 28, 0.1); border: 1px solid rgba(255, 159, 28, 0.2); border-bottom-left-radius: 2px; }
         .msg-user { align-self: flex-end; background: rgba(255, 255, 255, 0.1); border-bottom-right-radius: 2px; }
 
-        .chat-options {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 15px; background: rgba(11, 19, 43, 0.5); border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .chat-option-btn {
-            background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 12px; border-radius: 20px;
-            font-size: 0.85rem; cursor: pointer; text-align: left; transition: all 0.2s; font-family: var(--font-body);
-        }
+        .chat-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 15px; background: rgba(11, 19, 43, 0.5); border-top: 1px solid rgba(255,255,255,0.05); }
+        .chat-option-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; text-align: left; transition: all 0.2s; font-family: var(--font-body); }
         .chat-option-btn:hover { background: var(--accent); color: var(--bg-main); }
         .chat-option-btn:disabled { opacity: 0.5; pointer-events: none; border-color: gray; color: gray; }
 
-        .chat-input-area {
-            display: flex; gap: 10px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(11, 19, 43, 0.5);
-        }
-        .chat-input-area input {
-            flex-grow: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255, 159, 28, 0.3); background: rgba(255, 255, 255, 0.05);
-            color: var(--text-light); font-family: var(--font-body); outline: none;
-        }
+        .chat-input-area { display: flex; gap: 10px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(11, 19, 43, 0.5); }
+        .chat-input-area input { flex-grow: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255, 159, 28, 0.3); background: rgba(255, 255, 255, 0.05); color: var(--text-light); font-family: var(--font-body); outline: none; }
         .chat-input-area input:disabled { opacity: 0.5; }
-        .chat-input-area button {
-            background: var(--accent); color: var(--bg-main); border: none; width: 40px; height: 40px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-        }
+        .chat-input-area button { background: var(--accent); color: var(--bg-main); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .chat-input-area button:disabled { background: gray; cursor: not-allowed; }
 
-        .typing-indicator {
-            display: none; align-self: flex-start; background: rgba(255, 159, 28, 0.1); border: 1px solid rgba(255, 159, 28, 0.2);
-            padding: 10px 15px; border-radius: 12px; border-bottom-left-radius: 2px; gap: 4px;
-        }
+        .typing-indicator { display: none; align-self: flex-start; background: rgba(255, 159, 28, 0.1); border: 1px solid rgba(255, 159, 28, 0.2); padding: 10px 15px; border-radius: 12px; border-bottom-left-radius: 2px; gap: 4px; }
         .typing-indicator.active { display: flex; }
         .typing-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
@@ -318,12 +203,8 @@
         }
 
         @media (max-width: 700px) {
-            /* Мобильный чат в полный экран (100dvh решает проблему с клавиатурой Safari) */
-            .chatbot-window {
-                width: 100%; height: 100dvh; bottom: 0; right: 0; left: 0; border-radius: 0; max-width: 100%; border: none;
-            }
+            .chatbot-window { width: 100%; height: 100dvh; bottom: 0; right: 0; left: 0; border-radius: 0; max-width: 100%; border: none; }
             .chat-options { grid-template-columns: 1fr; }
-            /* Скрываем кнопку вызова чата, когда сам чат открыт на весь экран */
             .chatbot-btn.hidden { display: none; }
         }
 
@@ -369,14 +250,13 @@
     </section>
 
     <section class="about" id="about">
-       <div class="about-text" style="text-align: center;">
-    <h2>Эстетика Ночи</h2>
-    <p>Если вы ищете <strong>лучший джаз-бар в Берлине</strong>, вы его нашли. Berlin Note — это больше, чем просто коктейльный бар. Это машина времени, переносящая вас в эпоху американского нуара 50-х годов, но с отчетливым европейским индастриал-характером Кройцберга.</p>
-    <p>Приглушенный свет, глубокие тени, винил и <strong>авторские коктейли</strong> от лучших миксологов города. Здесь звучит подлинная <strong>живая музыка</strong>: от классического свинга до современных джем-сейшнов. Гранд-открытие нашего джаз-клуба состоится <strong>14 октября 2026 года</strong>. Ждем вас с 16:00.</p>
-</div>
-
+        <div class="about-text" style="text-align: center;">
+            <h2>Эстетика Ночи</h2>
+            <p>Если вы ищете <strong>лучший джаз-бар в Берлине</strong>, вы его нашли. Berlin Note — это больше, чем просто коктейльный бар. Это машина времени, переносящая вас в эпоху американского нуара 50-х годов, но с отчетливым европейским индастриал-характером Кройцберга.</p>
+            <p>Приглушенный свет, глубокие тени, винил и <strong>авторские коктейли</strong> от лучших миксологов города. Здесь звучит подлинная <strong>живая музыка</strong>: от классического свинга до современных джем-сейшнов. Гранд-открытие нашего джаз-клуба состоится <strong>14 октября 2026 года</strong>. Ждем вас с 16:00.</p>
+        </div>
         <div class="img-card">
-            <img src="images/about_us_1781691091010.png" alt="Berlin Note Interior">
+            <img src="images/about_us_1781691091010.png" alt="Внутри джаз-бара Berlin Note в Берлине">
         </div>
     </section>
 
@@ -388,8 +268,8 @@
         </div>
         <div class="gallery-grid">
             <div class="img-card"><img src="images/gallery_1_1781691161123.png" alt="Виниловый проигрыватель в джаз-баре Berlin Note в Берлине"></div>
-            <div class="img-card"><img src="images/gallery_2_1781691187950.png" alt="Stage"></div>
-            <div class="img-card"><img src="images/gallery_3_1781691198604.png" alt="Барная стойка и авторские коктейли в Кройцберге"></div>
+            <div class="img-card"><img src="images/gallery_2_1781691187950.png" alt="Подготовка сцены к джазовому концерту в Кройцберге"></div>
+            <div class="img-card"><img src="images/gallery_3_1781691198604.png" alt="Барная стойка и авторские коктейли в Берлине"></div>
         </div>
     </section>
 
@@ -475,25 +355,57 @@
                     <input type="datetime-local" id="booking-date" class="form-control" required min="2026-10-14T16:00">
                 </div>
                 <div class="form-group">
+                    <label for="guests">Количество гостей</label>
+                    <input type="number" id="guests" class="form-control" min="1" max="12" placeholder="Например: 2" required>
+                </div>
+                <div class="form-group">
                     <label for="name">Ваше имя</label>
                     <input type="text" id="name" class="form-control" placeholder="Имя" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" class="form-control" pattern="^\+[0-9]{9,15}$" placeholder="+49..." required>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Подтвердить бронь</button>
             </form>
         </div>
     </section>
 
+    <section class="jobs-banner" id="jobs">
+        <div class="jobs-content">
+            <h2>Стань частью Berlin Note</h2>
+            <p>Ищем барменов, официантов и влюбленных в джаз людей. Знание немецкого и английского будет плюсом.</p>
+            <a href="#vacancy-modal" class="btn btn-primary">Откликнуться на вакансию</a>
+        </div>
+    </section>
+
     <footer id="footer">
         <div class="footer-grid">
             <div class="footer-info">
-                <h3>BERLIN NOTE</h3>
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem;">
+                    <img src="images/logo.png" alt="Berlin Note Logo" style="height: 50px; border-radius: 4px;">
+                    <h3 style="margin-bottom: 0; color: var(--accent);">BERLIN NOTE</h3>
+                </div>
                 <p>Kreuzberg, 10999 Berlin, Germany</p>
                 <p>Телефон: +49 30 1234567</p>
                 <p>Чт - Вс: 18:00 - 02:00</p>
+                <div class="social-icons">
+                    <a href="instagram.html" title="Instagram">In</a>
+                    <a href="facebook.html" title="Facebook">Fb</a>
+                </div>
+            </div>
+            <div class="footer-map">
+                <div class="map-placeholder">
+                    Интерактивная карта Google Maps
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div>&copy; 2026 Berlin Note. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </div>
         </div>
     </footer>
 
@@ -503,6 +415,55 @@
             <div class="modal-icon">✓</div>
             <h2 style="margin-bottom: 1rem;">Заявка на столик принята!</h2>
             <p>После обработки данных наш менеджер свяжется с вами и подтвердит заказ.</p>
+            <a href="#!" class="btn btn-primary">Отлично</a>
+        </div>
+    </div>
+
+    <div id="vacancy-modal" class="modal">
+        <div class="modal-content" style="text-align: left;">
+            <a href="#!" class="modal-close">&times;</a>
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">Присоединиться к команде</h2>
+            <form action="#vacancy-success-modal">
+                <div class="form-group">
+                    <label for="vac-name">Имя</label>
+                    <input type="text" id="vac-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="vac-contact">Телефон, Email или Telegram</label>
+                    <input type="text" id="vac-contact" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="vac-position">Желаемая позиция</label>
+                    <select id="vac-position" class="form-control" required>
+                        <option value="" disabled selected>Выберите должность...</option>
+                        <option value="bartender">Бармен</option>
+                        <option value="waiter">Официант</option>
+                        <option value="hostess">Хостес</option>
+                        <option value="sound">Звукорежиссер</option>
+                    </select>
+                </div>
+                
+                <label class="file-drop-zone" id="file-drop-label">
+                    <span id="file-name-display">Загрузить резюме (.pdf)</span>
+                    <input type="file" id="resume-upload" accept=".pdf" required onchange="handleFileUpload(this)">
+                </label>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="data-consent" required>
+                    <label for="data-consent">Я даю согласие на обработку моих персональных данных</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить резюме</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="vacancy-success-modal" class="modal">
+        <div class="modal-content">
+            <a href="#!" class="modal-close">&times;</a>
+            <div class="modal-icon">✓</div>
+            <h2 style="margin-bottom: 1rem;">Данные кандидата приняты!</h2>
+            <p>Наш менеджер свяжется с вами после рассмотрения вашего резюме.</p>
             <a href="#!" class="btn btn-primary">Отлично</a>
         </div>
     </div>
@@ -541,7 +502,17 @@
     </div>
 
     <script>
-        // Блокировка от спам-запросов (экономия лимитов API)
+        // Функция для загрузки файлов в форме вакансии (Восстановлена)
+        function handleFileUpload(input) {
+            const label = document.getElementById('file-drop-label');
+            const display = document.getElementById('file-name-display');
+            if (input.files && input.files[0]) {
+                label.classList.add('file-attached');
+                display.innerText = input.files[0].name;
+            }
+        }
+
+        // Блокировка от спам-запросов
         let isWaitingForReply = false;
 
         function toggleChat() {
@@ -549,7 +520,6 @@
             const chatBtn = document.getElementById('chatBtn');
             chatWindow.classList.toggle('active');
             
-            // Скрываем круглую кнопку на мобильных, если открыт чат на 100% экрана
             if (window.innerWidth <= 700) {
                 chatBtn.classList.toggle('hidden', chatWindow.classList.contains('active'));
             }
@@ -575,7 +545,6 @@
             sendMessage();
         }
 
-        // Предотвращаем баги при нажатии Enter (перезагрузку или двойную отправку)
         function handleEnter(event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); 
@@ -595,7 +564,6 @@
             const indicator = document.getElementById('typingIndicator');
             const chatBox = document.getElementById('chatBody');
             indicator.classList.add('active'); 
-            // Фикс автоскролла: скроллим вниз ПРИ показе индикатора
             chatBox.scrollTop = chatBox.scrollHeight;
         }
         
@@ -622,7 +590,6 @@
             appendMessage(text, 'user-msg');
             chatInput.value = '';
             
-            // Включаем защиту от спам-кликов и показываем "Силуэт печатает"
             toggleInputLock(true);
             showTypingIndicator();
             
@@ -652,7 +619,6 @@
                 removeTypingIndicator();
                 appendMessage("Связь с баром прервалась. Налейте пока бокал виски и повторите попытку.", 'bot-msg');
             } finally {
-                // Снимаем блокировку, чтобы пользователь мог писать дальше
                 toggleInputLock(false);
                 chatInput.focus();
             }
