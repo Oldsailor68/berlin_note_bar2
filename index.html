@@ -784,31 +784,69 @@
             height: 30px;
             fill: var(--bg-main);
         }
-        .chatbot-window {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 350px;
-            max-width: calc(100vw - 60px);
-            background: rgba(28, 37, 65, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 159, 28, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-        .chatbot-window.active {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
+        /* Обновленный горизонтальный стиль для окна чата */
+.chatbot-window {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    /* Увеличиваем ширину, делая окно горизонтальным */
+    width: 650px; 
+    /* Оптимальная высота, чтобы окно не перекрывало весь экран */
+    height: 480px; 
+    background-color: #1a1a1a; /* Ваш темный нуарный фон */
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    display: none; /* Или используйте вашу логику active */
+    flex-direction: column;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Переключатель видимости (если используете класс .active) */
+.chatbot-window.active {
+    display: flex;
+}
+
+/* Делаем область с сообщениями более просторной */
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Сетка для кнопок быстрых ответов, чтобы они красиво ложились в широком окне */
+.chat-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Кнопки встанут в два аккуратных ряда по две штуки */
+    gap: 8px;
+    padding: 10px 20px;
+    background: #111;
+    border-top: 1px solid #222;
+}
+
+.chat-option-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+    text-align: left;
+    /* Ваши текущие стили для кнопок (цвет, бордер) сохраняются */
+}
+
+/* Адаптивность: на мобильных экранах возвращаем вертикальный формат, чтобы окно не вылезало за края */
+@media (max-width: 700px) {
+    .chatbot-window {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        height: 80vh;
+    }
+    .chat-options {
+        grid-template-columns: 1fr; /* На смартфонах кнопки снова в один ряд */
+    }
+}
         .chat-header {
             background: rgba(11, 19, 43, 0.9);
             padding: 15px 20px;
