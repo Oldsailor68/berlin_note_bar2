@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://berlin-note-bar2.vercel.app/sitemap.xml
