@@ -1394,35 +1394,35 @@
 
     // 2. Логика отправки сообщения
     async function sendMessage() {
-        const input = document.getElementById('user-chat-input');
-        const text = input.value.trim();
-        if (!text) return;
+    const input = document.getElementById('user-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
 
-        appendMessage(text, 'user-msg');
-        input.value = '';
-        showTypingIndicator();
+    appendMessage(text, 'user-msg');
+    input.value = '';
+    showTypingIndicator();
 
-        // Ваш ключ из AI Studio (вставьте его сюда напрямую)
-        const API_KEY = "AQ.Ab8RN6LQ6722PgKTNFtQVnOTq_v80NMSN48FOjG6dSJXaer6EQ";
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    try {
+        // Теперь мы обращаемся к НАШЕЙ серверной функции на Vercel
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+        });
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: text }] }]
-                })
-            });
-            const data = await response.json();
-            const reply = data.candidates[0].content.parts[0].text;
-            removeTypingIndicator();
-            appendMessage(reply, 'bot-msg');
-        } catch (e) {
-            removeTypingIndicator();
-            appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
-        }
+        const data = await response.json();
+        
+        // Парсим ответ так же, как делали это раньше
+        const reply = data.candidates[0].content.parts[0].text;
+        
+        removeTypingIndicator();
+        appendMessage(reply, 'bot-msg');
+    } catch (e) {
+        removeTypingIndicator();
+        appendMessage("Бармен Силуэт немного призадумался... Попробуйте еще раз.", 'bot-msg');
+        console.error(e);
     }
+}
 
     // Функции вывода
     function appendMessage(text, type) {
