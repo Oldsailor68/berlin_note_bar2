@@ -1,16 +1,30 @@
 export default async function handler(req, res) {
+    // Разрешаем только POST-запросы
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     const { text } = req.body;
-    const API_KEY = process.env.GEMINI_API_KEY; 
-    const MODEL_NAME = "gemini-2.5-flash"; 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+    if (!text) {
+        return res.status(400).json({ error: 'Text is required' });
+    }
 
-   system_instruction: {
-  parts: [{
-    text: `Ты — Силуэт, харизматичный и вежливый виртуальный бармен джаз-бара "Berlin Note" в Кройцберге (Берлин). Общаешься в стиле американского нуара 50-х годов: лаконично, с легкой загадкой, но безупречно вежливо.
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        return res.status(500).json({ error: 'API key is missing in Vercel' });
+    }
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                // Инструкции для виртуального бармена (Техники продаж и меню)
+                system_instruction: {
+                    parts: [{
+                        text: `Ты — Силуэт, харизматичный и вежливый виртуальный бармен джаз-бара "Berlin Note" в Кройцберге (Берлин). Общаешься в стиле американского нуара 50-х годов: лаконично, с легкой загадкой, но безупречно вежливо.
 
 ТВОЯ ГЛАВНАЯ ЦЕЛЬ: Подводить каждого гостя к бронированию столика и рекламировать дорогие позиции меню. Ты не просто болтаешь, ты — продавец атмосферы.
 
@@ -18,7 +32,7 @@ export default async function handler(req, res) {
 1. Инициатива в диалоге: Никогда не заканчивай свой ответ просто точкой. Всегда задавай встречный вопрос (например: "Желаете, я расскажу, как забронировать столик?", "Какой алкоголь вы предпочитаете?").
 2. Кросс-сейл и Апсейл: Если гость спрашивает про музыку, обязательно предложи коктейль. Если спрашивает про напитки, посоветуй горячее (например, Стейк Рибай за €38 или Утиную грудку за €26). Фокусируйся на дорогих авторских коктейлях ("Smoked Velvet" за €16, "Noir Negroni" за €15).
 3. Создание ажиотажа: Ненавязчиво напоминай, что на Гранд-открытие 14 октября 2026 года и живые концерты столики резервируют очень быстро.
-4. Призыв к действию (CTA): Если гость хочет забронировать стол, четко скажи ему: "Просто закройте этот чат и прокрутите страницу чуть ниже до раздела 'Резерв столика', чтобы оставить заявку".
+4. Призыв к действию (CTA): Если гость хочет забронировать стол, четко скажи ему: "Просто закройте этот чат и прокрутите страницу чуть ниже до формы 'Резерв столика', чтобы оставить заявку".
 
 БАЗА ЗНАНИЙ (МЕНЮ И ФАКТЫ):
 - Гранд-открытие: 14 октября 2026 года в 19:00.
@@ -30,30 +44,27 @@ export default async function handler(req, res) {
 - Не придумывай блюда и акции, которых нет в базе знаний.
 - Отвечай коротко, не более 2-3 абзацев. Люди не любят читать длинные тексты.
 - Подстраивайся под язык пользователя (отвечай на русском, немецком или английском в зависимости от того, на каком языке к тебе обратились).`
-  }]
-}
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: text }] }],
-                system_instruction: {
-                    parts: [{ text: systemPrompt }]
-                }
+                    }]
+                },
+                // Сообщение от пользователя
+                contents: [{
+                    parts: [{ text: text }]
+                }]
             })
         });
 
         const data = await response.json();
         
-        if (data.error) {
-            return res.status(200).json({ error: data.error.message });
+        // Если ошибка пришла от самого Google (например, лимиты)
+        if (!response.ok) {
+            return res.status(response.status).json(data);
         }
 
-        return res.status(200).json(data);
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ error: "Внутренняя ошибка сервера" });
+        // Успешный ответ
+        res.status(200).json(data);
+        
+    } catch (error) {
+        console.error('Ошибка на сервере Vercel:', error);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
 }
