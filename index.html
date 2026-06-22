@@ -691,13 +691,21 @@
                 const data = await response.json();
                 removeTypingIndicator();
                 
+                // --- ИЗМЕНЕННЫЙ БЛОК ОБРАБОТКИ ОШИБОК ---
                 if (data.error) {
-                    if (data.error.includes("quota")) {
+                    // Извлекаем текст ошибки, даже если Google спрятал его глубоко
+                    const errorText = typeof data.error === 'string' ? data.error : (data.error.message || '');
+                    
+                    if (errorText.toLowerCase().includes("quota")) {
                         appendMessage("У барной стойки людно. Дайте мне полминуты, я разведу заказы и вернусь.", 'bot-msg');
                     } else {
-                        appendMessage("Силуэт немного отвлекся... Пожалуйста, повторите вопрос.", 'bot-msg');
+                        appendMessage("Силуэт протирает бокал и немного отвлекся... Пожалуйста, повторите вопрос.", 'bot-msg');
                     }
-                } else if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0]) {
+                    return;
+                }
+                // --- КОНЕЦ ИЗМЕНЕННОГО БЛОКА ---
+
+                else if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0]) {
                     appendMessage(data.candidates[0].content.parts[0].text, 'bot-msg');
                 } else {
                     appendMessage("Силуэт задумался под звуки саксофона. Повторите, пожалуйста.", 'bot-msg');
