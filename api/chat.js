@@ -8,6 +8,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Text is required' });
     }
 
+
     const apiKey = process.env.GEMINI_API_KEY;
     const tgToken = process.env.TELEGRAM_BOT_TOKEN;
     const tgChatId = process.env.TELEGRAM_CHAT_ID;
