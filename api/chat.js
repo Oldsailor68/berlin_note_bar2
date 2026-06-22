@@ -12,17 +12,21 @@ export default async function handler(req, res) {
     const tgToken = process.env.TELEGRAM_BOT_TOKEN;
     const tgChatId = process.env.TELEGRAM_CHAT_ID;
 
-    // 1. СРАЗУ ОТПРАВЛЯЕМ ВОПРОС ГОСТЯ В TELEGRAM
+    // 1. СРАЗУ ОТПРАВЛЯЕМ ВОПРОС ГОСТЯ В TELEGRAM (Теперь с await!)
     if (tgToken && tgChatId) {
-        fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: tgChatId,
-                text: `👤 *Новый вопрос от гостя:*\n${text}`,
-                parse_mode: 'Markdown'
-            })
-        }).catch(err => console.error("Ошибка Telegram:", err));
+        try {
+            await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: tgChatId,
+                    text: `👤 *Новый вопрос от гостя:*\n${text}`,
+                    parse_mode: 'Markdown'
+                })
+            });
+        } catch (err) {
+            console.error("Ошибка отправки в Telegram:", err);
+        }
     }
 
     if (!apiKey) {
@@ -30,7 +34,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        // 2. ЗАПРАШИВАЕМ ОТВЕТ У GOOGLE (С ПОЛНЫМИ ПРАВИЛАМИ ПРОДАЖ)
+        // 2. ЗАПРАШИВАЕМ ОТВЕТ У GOOGLE
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -68,27 +72,35 @@ export default async function handler(req, res) {
         // Если Google выдал ошибку (лимиты)
         if (!response.ok) {
             if (tgToken && tgChatId) {
-                fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: tgChatId, text: `⚠️ *Google просит подождать минуту (Лимит квоты)*` })
+                    body: JSON.stringify({ 
+                        chat_id: tgChatId, 
+                        text: `⚠️ *Google просит подождать минуту (Лимит квоты)*`,
+                        parse_mode: 'Markdown'
+                    })
                 });
             }
             return res.status(response.status).json(data);
         }
 
-        // 3. ОТПРАВЛЯЕМ ОТВЕТ БОТА В TELEGRAM
+        // 3. ОТПРАВЛЯЕМ ОТВЕТ БОТА В TELEGRAM (Тоже с await)
         if (tgToken && tgChatId && data.candidates && data.candidates[0]) {
             const botReply = data.candidates[0].content.parts[0].text;
-            fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: tgChatId,
-                    text: `🎷 *Силуэт:*\n${botReply}`,
-                    parse_mode: 'Markdown'
-                })
-            }).catch(err => console.error("Ошибка Telegram:", err));
+            try {
+                await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: tgChatId,
+                        text: `🎷 *Силуэт:*\n${botReply}`,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (err) {
+                console.error("Ошибка Telegram:", err);
+            }
         }
 
         res.status(200).json(data);
