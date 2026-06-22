@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // Разрешаем только POST-запросы
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
@@ -10,6 +9,9 @@ export default async function handler(req, res) {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
+    const tgToken = process.env.TELEGRAM_BOT_TOKEN;
+    const tgChatId = process.env.TELEGRAM_CHAT_ID;
+
     if (!apiKey) {
         return res.status(500).json({ error: 'API key is missing in Vercel' });
     }
@@ -21,7 +23,6 @@ export default async function handler(req, res) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // Инструкции для виртуального бармена (Техники продаж и меню)
                 system_instruction: {
                     parts: [{
                         text: `Ты — Силуэт, харизматичный и вежливый виртуальный бармен джаз-бара "Berlin Note" в Кройцберге (Берлин). Общаешься в стиле американского нуара 50-х годов: лаконично, с легкой загадкой, но безупречно вежливо.
@@ -46,7 +47,6 @@ export default async function handler(req, res) {
 - Подстраивайся под язык пользователя (отвечай на русском, немецком или английском в зависимости от того, на каком языке к тебе обратились).`
                     }]
                 },
-                // Сообщение от пользователя
                 contents: [{
                     parts: [{ text: text }]
                 }]
@@ -55,12 +55,28 @@ export default async function handler(req, res) {
 
         const data = await response.json();
         
-        // Если ошибка пришла от самого Google (например, лимиты)
         if (!response.ok) {
             return res.status(response.status).json(data);
         }
 
-        // Успешный ответ
+        // ---- ОТПРАВКА В TELEGRAM ----
+        if (tgToken && tgChatId && data.candidates && data.candidates[0]) {
+            const botReply = data.candidates[0].content.parts[0].text;
+            const tgMessage = `🔔 *Новый диалог в баре*\n\n🗣 *Гость:* ${text}\n\n🎷 *Силуэт:* ${botReply}`;
+            
+            // Отправляем асинхронно, чтобы не тормозить ответ на сайте
+            fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: tgChatId,
+                    text: tgMessage,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => console.error("Ошибка Telegram:", err));
+        }
+        // ------------------------------
+
         res.status(200).json(data);
         
     } catch (error) {
