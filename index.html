@@ -302,23 +302,25 @@
         }
         /* ==================== СЛАЙДЕРЫ (КАРУСЕЛЬ) ==================== */
         .carousel-wrapper {
-            position: relative;
+            position: relative !important;
             width: 100%;
             max-width: 800px;
             margin: 0 auto 30px;
             overflow: hidden;
             border-radius: 12px;
+            display: block; /* Гарантируем правильный контейнер */
         }
 
         .carousel-track {
             display: flex;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
         }
 
         .carousel-slide {
             min-width: 100%;
             box-sizing: border-box;
-            padding: 0 10px; /* Отступы между слайдами */
+            padding: 0; 
         }
 
         .carousel-slide img {
@@ -326,35 +328,36 @@
             border-radius: 8px;
             object-fit: cover;
             border: 1px solid rgba(255, 159, 28, 0.2);
+            display: block;
         }
 
+        /* ЖЕЛЕЗОБЕТОННЫЕ КНОПКИ ПО БОКАМ */
         .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(28, 37, 65, 0.9);
-            color: var(--accent);
-            border: 1px solid var(--accent);
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            background: rgba(28, 37, 65, 0.9) !important;
+            color: var(--accent) !important;
+            border: 1px solid var(--accent) !important;
             width: 44px;
             height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            z-index: 10;
+            z-index: 100 !important;
             font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
         }
 
         .carousel-btn:hover {
-            background: var(--accent);
-            color: var(--bg-main);
+            background: var(--accent) !important;
+            color: var(--bg-main) !important;
         }
 
-        .carousel-btn.prev { left: 5px; }
-        .carousel-btn.next { right: 5px; }
+        .carousel-btn.prev { left: 10px !important; }
+        .carousel-btn.next { right: 10px !important; }
     </style>
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -414,15 +417,17 @@
             <div class="img-card"><img src="images/gallery_2_1781691187950.png" alt="Подготовка сцены к джазовому концерту в Кройцберге"></div>
             <div class="img-card"><img src="images/gallery_3_1781691198604.png" alt="Барная стойка и авторские коктейли в Берлине"></div>
         </div>
-        <div class="carousel-wrapper">
-            <button class="carousel-btn prev" onclick="moveSlide('opening-slider', -1)">&#10094;</button>
-            <div class="carousel-track" id="opening-slider">
-                <div class="carousel-slide"><img src="images/interior_placeholder1.png" alt="Атмосфера 1" style="aspect-ratio: 16/9;"></div>
-                <div class="carousel-slide"><img src="images/interior_placeholder2.png" alt="Атмосфера 2" style="aspect-ratio: 16/9;"></div>
-                <div class="carousel-slide"><img src="images/interior_placeholder3.png" alt="Атмосфера 3" style="aspect-ratio: 16/9;"></div>
-            </div>
-            <button class="carousel-btn next" onclick="moveSlide('opening-slider', 1)">&#10095;</button>
+<div class="carousel-wrapper"> 
+
+    <button class="carousel-btn prev" onclick="moveSlide('opening-slider', -1)">&#10094;</button>
+    
+    <div class="carousel-track" id="opening-slider">
+        <div class="carousel-slide"><img src="images/interior_placeholder1.png" alt="Атмосфера 1" style="aspect-ratio: 16/9;"></div>
         </div>
+    
+    <button class="carousel-btn next" onclick="moveSlide('opening-slider', 1)">&#10095;</button>
+
+</div>
     </section>
 
     <section id="events">
