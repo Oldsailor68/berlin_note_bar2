@@ -1,40 +1,42 @@
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
-    }
-
-    const { text } = req.body;
-    if (!text) {
-        return res.status(400).json({ error: 'Text is required' });
-    }
-
-    const apiKey = process.env.GEMINI_API_KEY;
-    const tgToken = process.env.TELEGRAM_BOT_TOKEN;
-    const tgChatId = process.env.TELEGRAM_CHAT_ID;
-
-    // 1. ОТПРАВЛЯЕМ ВОПРОС ГОСТЯ В TELEGRAM
-    if (tgToken && tgChatId) {
-        try {
-            await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: tgChatId,
-                    text: `👤 *Новый вопрос от гостя:*\n${text}`,
-                    parse_mode: 'Markdown'
-                })
-            });
-        } catch (err) {
-            console.error("Ошибка отправки в Telegram:", err);
-        }
-    }
-
-    if (!apiKey) {
-        return res.status(500).json({ error: 'API key is missing in Vercel' });
-    }
-
+    // Оборачиваем абсолютно всё в защитный блок
     try {
-        // 2. ЗАПРАШИВАЕМ ОТВЕТ У GOOGLE (С ПРАВИЛОМ О ВАКАНСИЯХ)
+        if (req.method !== 'POST') {
+            return res.status(405).json({ error: 'Method Not Allowed' });
+        }
+
+        // Безопасное извлечение текста
+        const text = req.body?.text;
+        if (!text) {
+            return res.status(400).json({ error: 'Text is required' });
+        }
+
+        const apiKey = process.env.GEMINI_API_KEY;
+        const tgToken = process.env.TELEGRAM_BOT_TOKEN;
+        const tgChatId = process.env.TELEGRAM_CHAT_ID;
+
+        // 1. ОТПРАВЛЯЕМ ВОПРОС В TELEGRAM
+        if (tgToken && tgChatId) {
+            try {
+                await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: tgChatId,
+                        text: `👤 *Новый вопрос от гостя:*\n${text}`,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (err) {
+                console.error("Ошибка Telegram:", err);
+            }
+        }
+
+        if (!apiKey) {
+            return res.status(500).json({ error: 'API key is missing' });
+        }
+
+        // 2. ЗАПРОС К GOOGLE GEMINI
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -60,7 +62,7 @@ export default async function handler(req, res) {
 - Еда: Говяжий тартар с трюфелем (€18), Сырное плато Noir (€22), Стейк Рибай (€38), Брускетты с лососем (€14), Утиная грудка Магре (€26), Шоколадный фондан (€10).
 
 ОГРАНИЧЕНИЯ:
-- Не придумывай блюда и вакансии, которых нет в базе знаний.
+- Не придумывай блюда и акции, которых нет в базе знаний.
 - Отвечай коротко, не более 2-3 абзацев. 
 - Подстраивайся под язык пользователя (отвечай на русском, немецком или английском).`
                     }]
@@ -72,17 +74,6 @@ export default async function handler(req, res) {
         const data = await response.json();
         
         if (!response.ok) {
-            if (tgToken && tgChatId) {
-                await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        chat_id: tgChatId, 
-                        text: `⚠️ *Google просит подождать минуту (Лимит квоты)*`,
-                        parse_mode: 'Markdown'
-                    })
-                });
-            }
             return res.status(response.status).json(data);
         }
 
@@ -90,4 +81,25 @@ export default async function handler(req, res) {
         if (tgToken && tgChatId && data.candidates && data.candidates[0]) {
             const botReply = data.candidates[0].content.parts[0].text;
             try {
-                await
+                await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: tgChatId,
+                        text: `🎷 *Силуэт:*\n${botReply}`,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (err) {
+                console.error("Ошибка Telegram:", err);
+            }
+        }
+
+        return res.status(200).json(data);
+
+    } catch (error) {
+        // Если произошла любая критическая ошибка, отдаем красивый ответ, а не страницу Vercel
+        console.error("Критическая ошибка сервера:", error);
+        return res.status(500).json({ error: 'Внутренняя ошибка сервера. ' + error.message });
+    }
+}
